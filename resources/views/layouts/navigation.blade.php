@@ -14,13 +14,13 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @endauth
-                    <x-nav-link :href="route('accueil')">
+                    <x-nav-link :href="route('actualite')" :active="request()->routeIs('actualite')">
                         {{ __('Actualité') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('accueil')">
+                    <x-nav-link :href="route('rapports')" :active="request()->routeIs('rapports')">
                         {{ __('Rapports') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('accueil')">
+                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
                         {{ __('Contact') }}
                     </x-nav-link>
                 </div>
@@ -94,13 +94,13 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             @endauth
-            <x-responsive-nav-link :href="route('accueil')">
+            <x-responsive-nav-link :href="route('actualite')" :active="request()->routeIs('actualite')">
                 {{ __('Actualité') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('accueil')">
+            <x-responsive-nav-link :href="route('rapports')" :active="request()->routeIs('rapports')">
                 {{ __('Rapports') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('accueil')">
+            <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
                 {{ __('Contact') }}
             </x-responsive-nav-link>
         </div>
@@ -131,5 +131,15 @@
             </div>
         </div>
         @endauth
+        @if (!auth()->user())
+            <div class="pt-4 pb-1 border-t border-gray-200">
+                <x-responsive-nav-link :href="route('register')">
+                    {{ __('Inscription') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('login')">
+                    {{ __('Connexion') }}
+                </x-responsive-nav-link>
+            </div>
+        @endif
     </div>
 </nav>
