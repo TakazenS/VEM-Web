@@ -98,7 +98,7 @@ class UserController extends Controller
     }
 
     /**
-     * Fournit les utilisateurs paginés au format JSON pour le "load more".
+     * Fournit les utilisateurs paginés au format JSON pour le "load more" géré en js.
      */
     public function getUsers()
     {
