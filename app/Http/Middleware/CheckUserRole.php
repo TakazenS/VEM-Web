@@ -22,10 +22,8 @@ class CheckUserRole
 
         $user = Auth::user();
 
-        foreach ($roles as $role) {
-            if ($user->role === $role) {
-                return $next($request);
-            }
+        if ($user->role === 'administrateur' || $user->role === 'directeur') {
+            return $next($request);
         }
 
         abort(403, 'Accès non autorisé.');

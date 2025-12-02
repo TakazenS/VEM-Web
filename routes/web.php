@@ -21,6 +21,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'check.role:administrateur, directeur'])->group(function () {
     Route::get('/dashboard/gestion-utilisateurs', [UserController::class, 'index'])->name('gestion.utilisateurs');
 
+    Route::delete('/users/delete', [UserController::class, 'deleteUser'])->name('users.delete');
+
     Route::patch('/users/{user}/update-role', [UserController::class, 'updateRole'])->name('users.updateRole');
 });
 
