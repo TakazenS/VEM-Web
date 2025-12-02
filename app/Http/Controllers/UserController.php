@@ -15,8 +15,8 @@ class UserController extends Controller
      */
     public function index(): View
     {
-        // On récupère tous les utilisateurs dans l'ordre croissant des ID's et on les passe à la vue
-        $users = User::orderBy('id')->get();
+        // On récupère les 8 premiers utilisateurs et on passe le paginateur à la vue
+        $users = User::orderBy('id')->paginate(8);
         return view('gestion-user', ['users' => $users]);
     }
 
@@ -80,8 +80,7 @@ class UserController extends Controller
 
             if ($user->isAdmin() && !auth()->user()->isDirecteur()) {
                 // Si on essaie de supprimer un admin sans être directeur
-                return redirect()->route('gestion.utilisateurs')
-                    ->with('error', 'Action non autorisée : vous ne pouvez pas supprimer un administrateur.');
+                return redirect()->route('gestion.utilisateurs')->with('error', 'Action non autorisée : vous ne pouvez pas supprimer un administrateur.');
             }
 
             $deletedUserNames[] = $user->name;
@@ -89,14 +88,21 @@ class UserController extends Controller
         }
 
         if (empty($deletedUserNames)) {
-            return redirect()->route('gestion.utilisateurs')
-                ->with('info', 'Aucun utilisateur n\'a été sélectionné pour la suppression.');
+            return redirect()->route('gestion.utilisateurs')->with('info', 'Aucun utilisateur n\'a été sélectionné pour la suppression.');
         }
 
-        $res = 'Utilisateur(s) supprimé(s) avec succès : ' . implode(', ', $deletedUserNames);
+        $message = 'Utilisateur(s) supprimé(s) avec succès : ' . implode(', ', $deletedUserNames);
 
         return redirect()->route('gestion.utilisateurs')
-            ->with('success', $res);
+            ->with('success', $message);
     }
 
+    /**
+     * Fournit les utilisateurs paginés au format JSON pour le "load more".
+     */
+    public function getUsers()
+    {
+        $users = User::orderBy('id')->paginate(8);
+        return response()->json($users);
+    }
 }
