@@ -20,7 +20,15 @@
     @if (Route::has('login'))
         <nav class="flex flex-row-reverse items-center w-1/2 h-full">
             @auth
-                <a href="{{ url('/dashboard') }}"
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    @method('POST')
+                    <button type="submit"
+                            class="py-2 px-4 mx-4">
+                        Déconnexion
+                    </button>
+                </form>
+                <a href="{{ route('dashboard') }}"
                    class="py-2 px-4 mx-4">
                     Dashboard
                 </a>
