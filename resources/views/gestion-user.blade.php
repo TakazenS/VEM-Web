@@ -129,6 +129,7 @@
                 const anyChecked = Array.from(userCheckboxes).some(c => c.checked);
                 // Active ou désactive le bouton en conséquence
                 deleteButton.disabled = !anyChecked;
+                deleteButton.style.cursor = anyChecked ? 'pointer' : 'not-allowed';
             }
 
             function updateButtonText() {
