@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -105,4 +106,5 @@ class UserController extends Controller
         $users = User::orderBy('id')->paginate(8);
         return response()->json($users);
     }
+
 }

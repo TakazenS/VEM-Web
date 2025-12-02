@@ -37,8 +37,14 @@ Route::middleware(['auth', 'check.role:administrateur, directeur'])->group(funct
     Route::get('/users', [UserController::class, 'getUsers'])->name('users.get');
 
     Route::delete('/users/delete', [UserController::class, 'deleteUser'])->name('users.delete');
+    Route::get('/users/delete', function () {
+        abort(404);
+    });
 
     Route::patch('/users/{user}/update-role', [UserController::class, 'updateRole'])->name('users.updateRole');
+    Route::get('/users/{user}/update-role', function () {
+        abort(404);
+    });
 });
 
 require __DIR__.'/auth.php';
