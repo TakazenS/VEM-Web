@@ -245,7 +245,7 @@
                 deleteButton.addEventListener('click', function (e) {
                     e.preventDefault();
                     const selectedCount = Array.from(document.querySelectorAll('.user-checkbox')).filter(c => c.checked).length;
-                    let message = selectedCount > 1 ? 'ces utilisateurs' : 'cet utilisateur';
+                    let message = selectedCount > 1 ? `${ selectedCount } utilisateurs` : 'cet utilisateur';
                     if (window.confirm(`Êtes-vous sûr de vouloir supprimer ${ message } ?`)) {
                         this.form.submit();
                     }
