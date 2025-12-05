@@ -6,6 +6,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -33,15 +34,29 @@ class UserController extends Controller
         $request->validate([
             'role' => ['required', Rule::in(['directeur', 'administrateur', 'chefs de site', 'chercheur', 'technicien', 'logistique', 'utilisateur'])],
         ]);
-
-        if (!auth()->user()->isDirecteur() && ($request->role === 'directeur' || $user->isDirecteur())) {
+        /*
+        if (!Auth::user()->isAdmin() || !Auth::user()->isDirecteur()) {
+            return redirect()->route('dashboard');
+        }
+*/
+        if (!Auth::user()->isDirecteur() && $request->role === 'directeur') {
             return redirect()->route('gestion.utilisateurs')
-                ->with('error', 'Action non autorisée : vous ne pouvez pas modifier le rôle de directeur');
+                ->with('error', 'Action non autorisée : vous ne pouvez pas ajouter le rôle de directeur');
         }
 
-        if (!auth()->user()->isDirecteur() && ($request->role === 'administrateur' || $user->isAdmin())) {
+        if (!Auth::user()->isDirecteur() && $request->role === 'administrateur') {
             return redirect()->route('gestion.utilisateurs')
-                ->with('error', 'Action non autorisée : vous ne pouvez pas modifier le rôle de administrateur');
+                ->with('error', 'Action non autorisée : vous ne pouvez pas ajouter le rôle administrateur');
+        }
+
+        if (!Auth::user()->isDirecteur() && $user->isDirecteur()) {
+            return redirect()->route('gestion.utilisateurs')
+                ->with('error', 'Action non autorisée : vous ne pouvez pas modifier le rôle de directeur.');
+        }
+
+        if (!Auth::user()->isDirecteur() && $user->isAdmin()) {
+            return redirect()->route('gestion.utilisateurs')
+                ->with('error', 'Action non autorisée : vous ne pouvez pas modifier le rôle administrateur');
         }
 
         // Met à jour le rôle de l'utilisateur
@@ -67,21 +82,22 @@ class UserController extends Controller
         $deletedUserNames = [];
 
         foreach ($users as $user) {
-            if (auth()->id() === $user->id) {
+            if (Auth()::id() === $user->id) {
                 // Si on essaie de s'auto-supprimer, on arrête tout
                 return redirect()->route('gestion.utilisateurs')
                     ->with('error', 'Action non autorisée : vous ne pouvez pas vous supprimer vous-même.');
             }
 
-            if ($user->isDirecteur() && (!auth()->user()->isDirecteur() || auth()->user()->isDirecteur())) {
+            if ($user->isDirecteur() && (!Auth::user()->isDirecteur() || Auth::user()->isDirecteur())) {
                 // Si on essaie de supprimer un directeur
                 return redirect()->route('gestion.utilisateurs')
                     ->with('error', 'Action non autorisée : vous ne pouvez pas supprimer un directeur.');
             }
 
-            if ($user->isAdmin() && !auth()->user()->isDirecteur()) {
+            if ($user->isAdmin() && !Auth::user()->isDirecteur()) {
                 // Si on essaie de supprimer un admin sans être directeur
-                return redirect()->route('gestion.utilisateurs')->with('error', 'Action non autorisée : vous ne pouvez pas supprimer un administrateur.');
+                return redirect()->route('gestion.utilisateurs')
+                    ->with('error', 'Action non autorisée : vous ne pouvez pas supprimer un administrateur.');
             }
 
             $deletedUserNames[] = $user->name;
@@ -89,7 +105,8 @@ class UserController extends Controller
         }
 
         if (empty($deletedUserNames)) {
-            return redirect()->route('gestion.utilisateurs')->with('info', 'Aucun utilisateur n\'a été sélectionné pour la suppression.');
+            return redirect()->route('gestion.utilisateurs')
+                ->with('info', 'Aucun utilisateur n\'a été sélectionné pour la suppression.');
         }
 
         $message = 'Utilisateur(s) supprimé(s) avec succès : ' . implode(', ', $deletedUserNames);

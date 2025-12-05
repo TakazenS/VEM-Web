@@ -5,35 +5,43 @@
         </h2>
     </x-slot>
 
-    <div class="py-4">
+    <div class="">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
+            <form action="{{ route('users.delete') }}" method="POST" id="delete-users-form" class="">
+                @csrf
+                @method('DELETE')
+
+                <div class="mt-4">
+                    <button id="delete-button" type="submit" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:border-red-700 disabled:opacity-25 transition ease-in-out duration-150">
+                        Supprimer
+                    </button>
+                </div>
+            </form>
+
             <!-- Session Status -->
-            <div class="mb-4">
+            <div class="my-4">
                 @if (session('success'))
                     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert" x-data="{ show: true }" x-show="show">
-                        <strong class="font-bold">Succès !</strong>
                         <span class="block sm:inline">{{ session('success') }}</span>
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="show = false">
-                            <svg class="fill-current h-6 w-6 text-gray-700" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                            <svg class="fill-current h-6 w-6 text-gray-900" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
                         </span>
                     </div>
                 @endif
                 @if (session('error'))
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" x-data="{ show: true }" x-show="show">
-                        <strong class="font-bold">Erreur !</strong>
                         <span class="block sm:inline">{{ session('error') }}</span>
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="show = false">
-                            <svg class="fill-current h-6 w-6 text-gray-700" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                            <svg class="fill-current h-6 w-6 text-gray-900" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
                         </span>
                     </div>
                 @endif
                 @if (session('info'))
                     <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert" x-data="{ show: true }" x-show="show">
-                        <strong class="font-bold">Info :</strong>
                         <span class="block sm:inline">{{ session('info') }}</span>
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="show = false">
-                            <svg class="fill-current h-6 w-6 text-gray-700" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                            <svg class="fill-current h-6 w-6 text-gray-900" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
                         </span>
                     </div>
                 @endif
@@ -67,7 +75,7 @@
                                 @forelse ($users as $user)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <input type="checkbox" name="user_ids[]" value="{{ $user->id }}" form="delete-users-form" class="user-checkbox rounded border-gray-300 text-gray-900 shadow-sm focus:ring-gray-700">
+                                            <input type="checkbox" name="user_ids[]" value="{{ $user->id }}" form="delete-users-form" @if (Auth::id() === $user->id || (Auth::user()->isAdmin() && $user->isAdmin() || $user->isDirecteur())) disabled style="cursor: not-allowed; opacity: 50%" @endif class="user-checkbox rounded border-gray-300 text-gray-900 shadow-sm focus:ring-gray-700">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             {{ $user->id }}
@@ -82,7 +90,7 @@
                                             <form action="{{ route('users.updateRole', $user->id) }}" method="POST" class="flex items-center flex-nowrap space-x-2">
                                                 @csrf
                                                 @method('PATCH')
-                                                <select name="role" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-900 focus:ring-gray-700">
+                                                <select name="role" @if (Auth::id() === $user->id || (Auth::user()->isAdmin() && $user->isAdmin() || $user->isDirecteur())) disabled @endif class="block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-gray-900 focus:ring-gray-700">
                                                     <option value="directeur" @if($user->role == 'directeur') selected @endif>Directeur</option>
                                                     <option value="administrateur" @if($user->role == 'administrateur') selected @endif>Administrateur</option>
                                                     <option value="chefs de site" @if($user->role == 'chefs de site') selected @endif>Chef de site</option>
@@ -91,8 +99,8 @@
                                                     <option value="logistique" @if($user->role == 'logistique') selected @endif>Logistique</option>
                                                     <option value="utilisateur" @if($user->role == 'utilisateur') selected @endif>Utilisateur</option>
                                                 </select>
-                                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
-                                                    Modifier
+                                                <button type="submit" @if (Auth::id() === $user->id || (Auth::user()->isAdmin() && $user->isAdmin() || $user->isDirecteur())) disabled style="cursor: not-allowed" @endif class="inline-flex items-center px-3 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                                    OK
                                                 </button>
                                             </form>
                                         </td>
@@ -115,17 +123,6 @@
                             </button>
                         </div>
                     @endif
-
-                    <form action="{{ route('users.delete') }}" method="POST" id="delete-users-form" class="fixed bottom-9 right-10">
-                        @csrf
-                        @method('DELETE')
-
-                        <div class="mt-4">
-                            <button id="delete-button" type="submit" disabled class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:border-red-700 disabled:opacity-25 transition ease-in-out duration-150">
-                                Supprimer
-                            </button>
-                        </div>
-                    </form>
 
                 </div>
             </div>
@@ -217,11 +214,11 @@
                 function updateButtonText()
                 {
                     const selectedCount = Array.from(userCheckboxes).filter(c => c.checked).length;
-                    if (selectedCount === 1) {
-                        deleteButton.textContent = 'Supprimer l\'utilisateur';
-                    } else if (selectedCount > 1) {
-                        deleteButton.textContent = 'Supprimer les utilisateurs';
+                    if (selectedCount >= 1) {
+                        deleteButton.disabled = false;
+                        deleteButton.textContent = `Supprimer (${ selectedCount })`;
                     } else {
+                        deleteButton.disabled = true;
                         deleteButton.textContent = 'Supprimer';
                     }
                 }
@@ -231,7 +228,9 @@
 
                 selectAllCheckbox.addEventListener('change', function () {
                     document.querySelectorAll('.user-checkbox').forEach(checkbox => {
-                        checkbox.checked = this.checked;
+                        if (!checkbox.disabled) {
+                            checkbox.checked = this.checked;
+                        }
                     });
                     updateButtonText();
                     updateButtonState();
