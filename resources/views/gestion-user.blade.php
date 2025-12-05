@@ -39,6 +39,7 @@
                 @endif
             </div>
 
+
             <div class="divide-gray-800 overflow-hidden">
                 <div class="text-gray-900">
                     <div class="overflow-x-auto shadow-sm sm:rounded-lg border-gray-300 border-2">
@@ -63,7 +64,7 @@
                                 </tr>
                             </thead>
                             <tbody id="user-table-body" class="bg-white divide-y divide-gray-200">
-                                @foreach ($users as $user)
+                                @forelse ($users as $user)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <input type="checkbox" name="user_ids[]" value="{{ $user->id }}" form="delete-users-form" class="user-checkbox rounded border-gray-300 text-gray-900 shadow-sm focus:ring-gray-700">
@@ -96,7 +97,13 @@
                                             </form>
                                         </td>
                                     </tr>
-                                @endforeach
+                                    @empty
+                                    <tr>
+                                        <td colspan="3" class="text-center py-4 text-gray-500">
+                                            Aucun résultat pour "{{ $search }}"
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
