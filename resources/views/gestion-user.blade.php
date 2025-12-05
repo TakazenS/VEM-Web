@@ -5,19 +5,36 @@
         </h2>
     </x-slot>
 
-    <div class="">
+    <div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <form action="{{ route('users.delete') }}" method="POST" id="delete-users-form" class="">
-                @csrf
-                @method('DELETE')
+            <div class="flex w-full mt-4 justify-between items-center">
+                <form action="{{ route('users.search') }}" method="GET">
+                    @csrf
+                    @method('GET')
 
-                <div class="mt-4">
-                    <button id="delete-button" type="submit" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:border-red-700 disabled:opacity-25 transition ease-in-out duration-150">
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ $search ?? '' }}"
+                        placeholder="Rechercher un prénom, nom, email ou un ID..."
+                        style="width: 400px;"
+                        class="border rounded-lg"
+                    >
+                    <button type="submit" class="bg-gray-800 ml-2 text-white text-xs py-2 px-4 rounded-lg font-semibold uppercase hover:bg-gray-700 transition ease-in-out duration-150">
+                        Chercher
+                    </button>
+                </form>
+
+                <form action="{{ route('users.delete') }}" method="POST" id="delete-users-form" class="m-0">
+                    @csrf
+                    @method('DELETE')
+
+                    <button id="delete-button" type="submit" class="m-0 inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:border-red-700 disabled:opacity-25 transition ease-in-out duration-150">
                         Supprimer
                     </button>
-                </div>
-            </form>
+                </form>
+            </div>
 
             <!-- Session Status -->
             <div class="my-4">
@@ -90,7 +107,7 @@
                                             <form action="{{ route('users.updateRole', $user->id) }}" method="POST" class="flex items-center flex-nowrap space-x-2">
                                                 @csrf
                                                 @method('PATCH')
-                                                <select name="role" @if (Auth::id() === $user->id || (Auth::user()->isAdmin() && $user->isAdmin() || $user->isDirecteur())) disabled @endif class="block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-gray-900 focus:ring-gray-700">
+                                                <select name="role" @if (Auth::id() === $user->id || (Auth::user()->isAdmin() && $user->isAdmin() || $user->isDirecteur())) disabled style="cursor: not-allowed;" @endif class="block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-gray-900 focus:ring-gray-700">
                                                     <option value="directeur" @if($user->role == 'directeur') selected @endif>Directeur</option>
                                                     <option value="administrateur" @if($user->role == 'administrateur') selected @endif>Administrateur</option>
                                                     <option value="chefs de site" @if($user->role == 'chefs de site') selected @endif>Chef de site</option>
@@ -104,11 +121,9 @@
                                                 </button>
                                             </form>
                                         </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="3" class="text-center py-4 text-gray-500">
-                                            Aucun résultat pour "{{ $search }}"
+                                        @empty
+                                        <td colspan="5" class="px-6 py-4 text-center text-gray-900">
+                                            Aucun résultat trouvé pour "{{ $search }}"
                                         </td>
                                     </tr>
                                 @endforelse

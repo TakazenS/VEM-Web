@@ -41,6 +41,8 @@ Route::middleware(['auth', 'check.role:administrateur, directeur'])->group(funct
         abort(404);
     });
 
+    Route::get('/users/search', [UserController::class, 'searchUsers'])->name('users.search');
+
     Route::patch('/users/{user}/update-role', [UserController::class, 'updateRole'])->name('users.updateRole');
     Route::get('/users/{user}/update-role', function () {
         abort(404);

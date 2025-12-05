@@ -22,6 +22,27 @@ class UserController extends Controller
         return view('gestion-user', ['users' => $users]);
     }
 
+    public function searchUsers(Request $request): View
+    {
+        // 1. On récupère la valeur saisie dans le champ de recherche
+        $search = $request->input('search');
+
+        // 2. On prépare la requête
+        $users = User::query()
+            ->when($search, function ($query, $search) {
+                // Si $search n'est pas vide, on ajoute la condition
+                return $query->where('name', 'like', "%{$search}%")
+                             ->orWhere('email', 'like', "%{$search}%")
+                             ->orWhere('id', 'like', "%{$search}%");
+
+            })
+            ->orderBy('id')
+            ->paginate(8);
+
+        // 3. On retourne la vue avec les résultats
+        return view('gestion-user', compact('users', 'search'));
+    }
+
     /**
      * Met à jour le rôle d'un utilisateur spécifique.
      * @param Request $request
@@ -34,11 +55,7 @@ class UserController extends Controller
         $request->validate([
             'role' => ['required', Rule::in(['directeur', 'administrateur', 'chefs de site', 'chercheur', 'technicien', 'logistique', 'utilisateur'])],
         ]);
-        /*
-        if (!Auth::user()->isAdmin() || !Auth::user()->isDirecteur()) {
-            return redirect()->route('dashboard');
-        }
-*/
+
         if (!Auth::user()->isDirecteur() && $request->role === 'directeur') {
             return redirect()->route('gestion.utilisateurs')
                 ->with('error', 'Action non autorisée : vous ne pouvez pas ajouter le rôle de directeur');
@@ -57,6 +74,11 @@ class UserController extends Controller
         if (!Auth::user()->isDirecteur() && $user->isAdmin()) {
             return redirect()->route('gestion.utilisateurs')
                 ->with('error', 'Action non autorisée : vous ne pouvez pas modifier le rôle administrateur');
+        }
+
+        if (Auth::user()->isDirecteur() && $request->role === 'directeur') {
+            return redirect()->route('gestion.utilisateurs')
+                ->with('error', "Action non autorisée : il ne peut y avoir qu'un seul directeur.");
         }
 
         // Met à jour le rôle de l'utilisateur
@@ -82,7 +104,7 @@ class UserController extends Controller
         $deletedUserNames = [];
 
         foreach ($users as $user) {
-            if (Auth()::id() === $user->id) {
+            if (Auth::id() === $user->id) {
                 // Si on essaie de s'auto-supprimer, on arrête tout
                 return redirect()->route('gestion.utilisateurs')
                     ->with('error', 'Action non autorisée : vous ne pouvez pas vous supprimer vous-même.');
