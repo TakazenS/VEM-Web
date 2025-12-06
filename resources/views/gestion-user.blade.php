@@ -152,7 +152,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // --- DEBUT DU SCRIPT DE PAGINATION ---
+            // DEBUT DU SCRIPT DE PAGINATION
             const loadMoreButton = document.getElementById('load-more-button');
             const tableBody = document.getElementById('user-table-body');
             let currentPage = {{ $users->currentPage() }};
