@@ -9,21 +9,27 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <div class="flex w-full mt-4 justify-between items-center">
-                <form action="{{ route('users.search') }}" method="GET">
+                <form action="{{ route('users.search') }}" method="GET" class="flex flex-row items-center">
                     @csrf
                     @method('GET')
 
-                    <input
-                        type="text"
-                        name="search"
-                        value="{{ $search ?? '' }}"
-                        placeholder="Rechercher un prénom, nom, email ou un ID..."
-                        style="width: 400px;"
-                        class="border rounded-lg"
-                    >
-                    <button type="submit" class="bg-gray-800 ml-2 text-white text-xs py-2 px-4 rounded-lg font-semibold uppercase hover:bg-gray-700 transition ease-in-out duration-150">
+                    <div class="relative flex items-center" style="width: 400px;">
+                        <input
+                            id="search-input"
+                            type="text"
+                            name="search"
+                            value="{{ $search ?? '' }}"
+                            placeholder="Recherche par prénom, nom, email ou ID..."
+                            class="border rounded-lg w-full pr-10"
+                        >
+                        <button id="supBtn" type="button" class="absolute right-2">
+                            <img src="{{ asset('images/assets/cross.svg') }}" alt="Supprimer" class="h-4 w-4 cursor-pointer">
+                        </button>
+                    </div>
+                    <button type="submit" class="bg-gray-800 ml-2 text-white text-xs flex-grow-0 py-2 px-4 rounded-lg font-semibold uppercase hover:bg-gray-700 transition ease-in-out duration-150">
                         Chercher
                     </button>
+                    <a href="{{ route('gestion.utilisateurs') }}" class="pl-2 hover:underline">Rafraichir</a>
                 </form>
 
                 <form action="{{ route('users.delete') }}" method="POST" id="delete-users-form" class="m-0">
@@ -41,15 +47,15 @@
                 @if (session('success'))
                     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert" x-data="{ show: true }" x-show="show">
                         <span class="block sm:inline">{{ session('success') }}</span>
-                        <span class="absolute top-0 bottom-0 right-0 mx-4 my-3" @click="show = false">
-                            <img src="{{ asset('images/assets/cross.svg') }}" alt="Fermer" class="h-8 w-8 cursor-pointer">
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-4" @click="show = false">
+                            <img src="{{ asset('images/assets/cross.svg') }}" alt="Fermer" class="h-5 w-5 cursor-pointer">
                         </span>
                     </div>
                 @endif
                 @if (session('error'))
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" x-data="{ show: true }" x-show="show">
                         <span class="block sm:inline">{{ session('error') }}</span>
-                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="show = false">
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-4" @click="show = false">
                             <img src="{{ asset('images/assets/cross.svg') }}" alt="Fermer" class="h-8 w-8 cursor-pointer">
                         </span>
                     </div>
@@ -57,7 +63,7 @@
                 @if (session('info'))
                     <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert" x-data="{ show: true }" x-show="show">
                         <span class="block sm:inline">{{ session('info') }}</span>
-                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="show = false">
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-4" @click="show = false">
                             <img src="{{ asset('images/assets/cross.svg') }}" alt="Fermer" class="h-8 w-8 cursor-pointer">
                         </span>
                     </div>
@@ -150,6 +156,13 @@
             const loadMoreButton = document.getElementById('load-more-button');
             const tableBody = document.getElementById('user-table-body');
             let currentPage = {{ $users->currentPage() }};
+
+            const searchInput = document.getElementById('search-input');
+            const supBtn = document.getElementById('supBtn');
+
+            supBtn.addEventListener('click', function () {
+                searchInput.value = '';
+            });
 
             if (loadMoreButton) {
                 loadMoreButton.addEventListener('click', function () {
