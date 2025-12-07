@@ -7,5 +7,4 @@
 
     <h1>Actualité</h1>
 
-    @include('my-components.front.footer')
 </x-app-layout>

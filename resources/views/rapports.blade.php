@@ -7,5 +7,4 @@
 
     <h1>Rapports</h1>
 
-    @include('my-components.front.footer')
 </x-app-layout>
