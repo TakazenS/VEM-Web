@@ -6,6 +6,6 @@ class RapportsController extends Controller
 {
     public function index()
     {
-        return view('rapports');
+        return view('rapports.rapports');
     }
 }

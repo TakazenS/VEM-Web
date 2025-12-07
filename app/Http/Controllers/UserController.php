@@ -23,7 +23,7 @@ class UserController extends Controller
     {
         // On récupère les 8 premiers utilisateurs et on passe le paginateur à la vue
         $users = User::orderBy('id')->paginate(8);
-        return view('gestion-user', ['users' => $users]);
+        return view('dashboard-pages.gestion-user', ['users' => $users]);
     }
 
     /**
@@ -40,7 +40,7 @@ class UserController extends Controller
 
         // Construit une requête vers la base de données sur le modèle User.
         $users = User::query()
-            // La méthode 'when' exécute la fonction de callback uniquemen si le premier argument ($search) est "vrai" (non nul, non vide).
+            // La méthode 'when' exécute la fonction de callback uniquement si le premier argument ($search) est "vrai" (non nul, non vide).
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'like', "%{$search}%")
                              ->orWhere('email', 'like', "%{$search}%")
@@ -51,7 +51,7 @@ class UserController extends Controller
 
         // Retourne la même vue 'gestion-user' et la variable 'search' pour pouvoir l'afficher à nouveau
         // dans le champ de recherche.
-        return view('gestion-user', compact('users', 'search'));
+        return view('dashboard-pages.gestion-user', compact('users', 'search'));
     }
 
     /**

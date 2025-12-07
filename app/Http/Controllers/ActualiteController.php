@@ -6,6 +6,6 @@ class ActualiteController extends Controller
 {
     public function index()
     {
-        return view('actualite');
+        return view('actualite.actualite');
     }
 }
