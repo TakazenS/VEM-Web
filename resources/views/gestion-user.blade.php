@@ -36,7 +36,7 @@
                     @csrf
                     @method('DELETE')
 
-                    <button id="delete-button" type="submit" class="m-0 inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:border-red-700 disabled:opacity-25 transition ease-in-out duration-150">
+                    <button id="delete-button" type="submit" disabled class="m-0 inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:border-red-700 disabled:opacity-25 transition ease-in-out duration-150">
                         Supprimer
                     </button>
                 </form>
@@ -57,7 +57,7 @@
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" x-data="{ show: true }" x-show="show">
                         <span class="block sm:inline">{{ session('error') }}</span>
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-4" @click="show = false">
-                            <img src="{{ asset('images/assets/cross.svg') }}" alt="Fermer" class="h-8 w-8 cursor-pointer">
+                            <img src="{{ asset('images/assets/cross.svg') }}" alt="Fermer" class="h-5 w-5 cursor-pointer">
                         </span>
                     </div>
                 @endif
@@ -65,7 +65,7 @@
                     <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert" x-data="{ show: true }" x-show="show">
                         <span class="block sm:inline">{{ session('info') }}</span>
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-4" @click="show = false">
-                            <img src="{{ asset('images/assets/cross.svg') }}" alt="Fermer" class="h-8 w-8 cursor-pointer">
+                            <img src="{{ asset('images/assets/cross.svg') }}" alt="Fermer" class="h-5 w-5 cursor-pointer">
                         </span>
                     </div>
                 @endif
