@@ -40,6 +40,7 @@
                         Supprimer
                     </button>
                 </form>
+
             </div>
 
             <!-- Session Status -->
@@ -69,7 +70,6 @@
                     </div>
                 @endif
             </div>
-
 
             <div class="divide-gray-800 overflow-hidden">
                 <div class="text-gray-900">
