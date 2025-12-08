@@ -42,9 +42,17 @@ class UserController extends Controller
         $users = User::query()
             // La méthode 'when' exécute la fonction de callback uniquement si le premier argument ($search) est "vrai" (non nul, non vide).
             ->when($search, function ($query, $search) {
-                return $query->where('name', 'like', "%{$search}%")
-                             ->orWhere('email', 'like', "%{$search}%")
-                             ->orWhere('id', 'like', "%{$search}%");
+                // Convertit le terme de recherche en minuscules une seule fois
+                $searchTerm = strtolower($search);
+
+                // Groupe les conditions de recherche pour éviter les conflits avec d'autres clauses WHERE
+                return $query->where(function ($q) use ($searchTerm) {
+                    // Recherche insensible à la casse sur le nom et l'email
+                    $q->whereRaw('LOWER(name) LIKE ?', ["%{$searchTerm}%"])
+                      ->orWhereRaw('LOWER(email) LIKE ?', ["%{$searchTerm}%"])
+                      // La recherche sur l'ID reste une recherche normale
+                      ->orWhere('id', 'like', "%{$searchTerm}%");
+                });
             })
             ->orderBy('id')
             ->paginate(8);
@@ -64,6 +72,11 @@ class UserController extends Controller
      */
     public function updateRole(Request $request, User $user): RedirectResponse
     {
+        // Si le nouveau rôle est le même que le rôle actuel de l'utilisateur, on renvoie uniquement la page.
+        if ($request->role === $user->role) {
+            return redirect()->route('gestion.utilisateurs');
+        }
+
         // On s'assure que le champ 'role' est bien présent dans la requête et que sa valeur
         // fait partie de la liste des rôles autorisés.
         $request->validate([
