@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div>
+    <div class="mt-4 mb-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <div class="flex w-full mt-4 justify-between items-center">

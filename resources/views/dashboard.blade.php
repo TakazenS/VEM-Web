@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    @if(auth()->user() && (auth()->user()->isAdmin() || auth()->user()->isDirecteur()))
+    @if(Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isDirecteur()))
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
         <a href="{{ route('gestion.utilisateurs') }}" class="block bg-white overflow-hidden shadow-sm sm:rounded-lg transition duration-200 ease-in-out transform hover:scale-x-105 hover:scale-105">
             <div class="p-6">
