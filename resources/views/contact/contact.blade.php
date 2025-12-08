@@ -55,6 +55,7 @@
                                           class="block mt-1 w-full"
                                           type="text"
                                           name="tel"
+                                          maxlength="14"
                                           :value="old('tel')"
                             />
                         </div>
@@ -64,8 +65,10 @@
                             <x-input-label for="object" :value="__('Objet de votre demande *')" />
                             <x-text-input id="object"
                                           class="block mt-1 w-full"
-                                          type="text" name="object"
+                                          type="text"
+                                          name="object"
                                           :value="old('object')"
+                                          maxlength="150"
                                           required
                             />
                         </div>
@@ -76,6 +79,7 @@
                             <textarea id="corps"
                                       name="corps"
                                       rows="4"
+                                      maxlength="1500"
                                       class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                       required
                             >{{ old('corps') }}</textarea>
@@ -122,6 +126,7 @@
             const emailInput = document.getElementById('email');
             const telInput = document.getElementById('tel');
             const objectInput = document.getElementById('object');
+            const corpsInput = document.getElementById('corps');
 
             // Vérifie le champ 'name'
             function validateName(name) {
@@ -187,8 +192,30 @@
                 }
             });
 
-            objectInput.addEventListener('change', function () {
-                console.log('changement');
+            // Style dynamique pour 'object'
+            objectInput.addEventListener('blur', function () {
+                const objectValue = objectInput.value;
+
+                // Si le champ 'object' est vide, on affiche la bordure rouge
+                if (!objectValue) {
+                    objectInput.classList.add('border-red-500');
+                    // Sinon, on enlève cette bordure
+                } else {
+                    objectInput.classList.remove('border-red-500');
+                }
+            });
+
+            // Style dynamique pour 'corps'
+            corpsInput.addEventListener('blur', function () {
+                const corpsValue = corpsInput.value;
+
+                // Si le champ 'corps' est vide, on affiche la bordure rouge
+                if (!corpsValue) {
+                    corpsInput.classList.add('border-red-500');
+                    // Sinon, on enlève cette bordure
+                } else {
+                    corpsInput.classList.remove('border-red-500');
+                }
             });
         });
     </script>
