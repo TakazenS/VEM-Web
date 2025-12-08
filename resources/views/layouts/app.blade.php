@@ -44,7 +44,13 @@
                 {{ $slot }}
             </main>
 
-            @include('my-components.front.footer')
+            @php
+                $footerRoutes = ['accueil', 'actualite', 'rapports', 'contact'];
+            @endphp
+
+            @if (in_array(Route::currentRouteName(), $footerRoutes))
+                @include('my-components.front.footer')
+            @endif
         </div>
     </body>
 </html>
