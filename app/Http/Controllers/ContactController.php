@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -14,7 +15,7 @@ class ContactController extends Controller
         return view('contact.contact');
     }
 
-    public function send(Request $request)
+    public function send(Request $request): View
     {
         $request->validate([
             'service' => ['required', 'max:25', Rule::in(['administration', 'logistique'])],
@@ -29,4 +30,5 @@ class ContactController extends Controller
 
         return view('contact.valid-contact-send');
     }
+
 }
