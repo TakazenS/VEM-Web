@@ -15,7 +15,7 @@ class ContactController extends Controller
         return view('contact.contact');
     }
 
-    public function send(Request $request): View
+    public function send(Request $request): RedirectResponse
     {
         $request->validate([
             'service' => ['required', 'max:25', Rule::in(['administration', 'logistique'])],
@@ -28,7 +28,9 @@ class ContactController extends Controller
 
         Contact::create($request->all());
 
-        return view('contact.valid-contact-send');
+        session()->flash('contact_success');
+
+        return redirect()->route('contact.validation');
     }
 
 }

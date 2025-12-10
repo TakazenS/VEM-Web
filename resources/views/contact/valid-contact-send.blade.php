@@ -9,13 +9,14 @@
         <meta property="og:url" content="{{ url()->current() }}" />
         <meta property="og:title" content="@yield('og_title', 'VEM')" />
         <meta property="og:description" content="@yield('og_description', 'VEM, l\'avenir dans la roche.')" />
-
         <meta property="og:image" content="@yield('og_image', asset('images/og-default.jpg'))" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="@yield('og_title', 'VEM')" />
         <meta name="twitter:description" content="@yield('og_description', 'VEM, l\'avenir dans la roche.')" />
         <meta name="twitter:image" content="@yield('og_image', asset('images/og-default.jpg'))" />
+
+        <meta http-equiv="refresh" content="10;url={{ route('accueil') }}">
 
         <title>VEM | Message envoyé !</title>
 
@@ -39,6 +40,7 @@
                             </svg>
                             <h2 class="mt-4 max-w-md text-2xl font-semibold text-gray-900">Votre demande de contact a été envoyée avec succès.</h2>
                             <p class="mt-2 max-w-md text-gray-600">Nos équipes vous recontacteront par email dès que votre demande aura été traitée.</p>
+                            <p class="mt-4 max-w-md text-gray-600">Vous serez automatiquement redirigé vers la page d'accueil dans 10 secondes.</p>
                             <div class="mt-6">
                                 <a href="{{ route('accueil') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
                                     Retour à l'accueil

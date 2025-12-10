@@ -5,6 +5,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RapportsController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\EnsureContactFormSubmit;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,7 +18,13 @@ Route::get('/actualite', [ActualiteController::class, 'index'])->name('actualite
 Route::get('/rapports', [RapportsController::class, 'index'])->name('rapports');
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::get('/contact/send', function () {
+    return redirect()->route('contact');
+});
 Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
+Route::get('/contact/validation', function () {
+    return view('contact.valid-contact-send');
+})->middleware(EnsureContactFormSubmit::class)->name('contact.validation');
 
 
 Route::get('/dashboard', function () {
