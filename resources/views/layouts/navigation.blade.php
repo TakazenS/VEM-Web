@@ -11,7 +11,7 @@
                     </x-nav-link>
                     @auth
                     @if(Auth::user() && !Auth::user()->isUtilisateur())
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @endif
@@ -92,9 +92,11 @@
                 {{ __('Accueil') }}
             </x-responsive-nav-link>
             @auth
+            @if(Auth::user() && !Auth::user()->isUtilisateur())
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @endif
             @endauth
             <x-responsive-nav-link :href="route('actualite')" :active="request()->routeIs('actualite')">
                 {{ __('Actualité') }}

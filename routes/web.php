@@ -59,6 +59,8 @@ Route::middleware(['auth', 'check.role:administrateur, directeur'])->group(funct
     });
 });
 
-Route::get('/gestion-contact', [DmdContactController::class, 'index'])->name('gestion.contact');
+Route::middleware(['auth', 'check.role:administrateur, directeur, logistique'])->group(function () {
+    Route::get('/gestion-contact', [DmdContactController::class, 'index'])->name('gestion.contact');
+});
 
 require __DIR__.'/auth.php';

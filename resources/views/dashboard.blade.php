@@ -26,7 +26,7 @@
     </div>
     @endif
 
-    @if(Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isDirecteur()))
+    @if(Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isDirecteur() || Auth::user()->isLogistique()))
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
             <a href="{{ route('gestion.contact') }}" class="block bg-white overflow-hidden shadow-sm sm:rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
                 <div class="p-6">
