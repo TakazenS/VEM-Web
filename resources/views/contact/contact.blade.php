@@ -86,7 +86,7 @@
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <button id="send-button" type="submit" disabled class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                            <button id="send-button" type="submit" disabled class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 transition ease-in-out duration-150">
                                 {{ __('Envoyer') }}
                             </button>
                         </div>
@@ -101,26 +101,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const sendBtn = document.getElementById('send-button');
-            const requiredFieldsForButton = [
-                document.getElementById('name'),
-                document.getElementById('email'),
-                document.getElementById('object'),
-                document.getElementById('corps')
-            ];
-
-            // Fonction pour mettre à jour l'état du bouton
-            function toggleButtonState() {
-                const allFilled = requiredFieldsForButton.every(field => field.value.trim() !== '');
-                sendBtn.disabled = !allFilled;
-            }
-
-            // Écouteur d'événement pour chaque champ requis afin de changer l'état du bouton
-            requiredFieldsForButton.forEach(field => {
-                field.addEventListener('input', toggleButtonState);
-            });
-
-            // Charge l'état du bouton au chargement de la page
-            toggleButtonState();
 
             const nameInput = document.getElementById('name');
             const emailInput = document.getElementById('email');
@@ -128,93 +108,116 @@
             const objectInput = document.getElementById('object');
             const corpsInput = document.getElementById('corps');
 
-            // Vérifie le champ 'name'
+            // 1. On écoute TOUS les champs pour détecter la moindre modification en direct
+            const allFields = [nameInput, emailInput, telInput, objectInput, corpsInput];
+
+            // --- Fonctions de validation ---
+
             function validateName(name) {
                 const regex = /^[\p{L} -]+$/u;
                 return regex.test(String(name));
             }
 
-            // Vérifie le champ 'email'
             function validateEmail(email) {
                 const regex = /^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
                 return regex.test(String(email));
             }
 
-            // Vérifie le champ 'tel'
             function validateTel(tel) {
                 const regex = /^(\d{10}|\d{2}( \d{2}){4})$/;
                 return regex.test(String(tel));
             }
 
-            // L'événement 'blur' se déclenche quand l'utilisateur quitte le champ
-            // Style dynamique pour 'name'
+            // --- Gestion du bouton ---
+
+            function toggleButtonState() {
+                const isNameValid = validateName(nameInput.value);
+                const isEmailValid = validateEmail(emailInput.value);
+
+                // 2. Le téléphone est valide s'il est VIDE ou s'il a un bon format
+                const isTelValid = telInput.value.trim() === '' || validateTel(telInput.value);
+
+                // 3. Objet et corps ne doivent pas être vides (trim enlève les espaces inutiles)
+                const isObjectValid = objectInput.value.trim() !== '';
+                const isCorpsValid = corpsInput.value.trim() !== '';
+
+                // Le formulaire est valide uniquement si TOUTES les conditions sont vraies
+                const isFormValid = isNameValid && isEmailValid && isTelValid && isObjectValid && isCorpsValid;
+
+                sendBtn.disabled = !isFormValid;
+
+                // Style visuel du bouton
+                if (sendBtn.disabled) {
+                    sendBtn.classList.add('opacity-30', 'cursor-not-allowed');
+                } else {
+                    sendBtn.classList.remove('opacity-30', 'cursor-not-allowed');
+                }
+            }
+
+            // L'événement 'input' se déclenche à CHAQUE touche pressée (idéal pour la modification)
+            allFields.forEach(field => {
+                field.addEventListener('input', toggleButtonState);
+            });
+
+            // Initialisation au chargement
+            toggleButtonState();
+
+            // --- Styles dynamiques (Quand on quitte le champ) ---
+
             nameInput.addEventListener('blur', function () {
-                const nameValue = nameInput.value;
-
-                // Si le champ 'name' est vide ou que la valeur n'est pas valide, on affiche une bordure rouge
-                if (!nameValue || !validateName(nameValue)) {
-                    nameInput.classList.add('border-red-500');
-                    // Sinon, on enlève cette bordure
+                if (!this.value || !validateName(this.value)) {
+                    this.classList.add('border-red-500');
                 } else {
-                    nameInput.classList.remove('border-red-500');
+                    this.classList.remove('border-red-500');
                 }
             });
 
-            // Style dynamique pour 'email'
             emailInput.addEventListener('blur', function () {
-                const emailValue = emailInput.value;
-
-                // Si le champ 'email' est vide ou que la valeur n'est pas valide, on affiche une bordure rouge
-                if (!emailValue || !validateEmail(emailValue)) {
-                    emailInput.classList.add('border-red-500');
-                    // Sinon, on enlève cette bordure
+                if (!this.value || !validateEmail(this.value)) {
+                    this.classList.add('border-red-500');
                 } else {
-                    emailInput.classList.remove('border-red-500');
+                    this.classList.remove('border-red-500');
                 }
             });
 
-            // Style dynamique pour 'tel'
             telInput.addEventListener('blur', function () {
-                const telValue = telInput.value;
+                const telValue = this.value;
 
-                // Si le champ 'tel' est vide, on enlève la bordure rouge
-                if (!telValue) {
-                    telInput.classList.remove('border-red-500');
+                // Si le champ est vide (facultatif), on enlève l'erreur et on met à jour le bouton
+                if (!telValue.trim()) {
+                    this.classList.remove('border-red-500');
+                    this.value = ''; // Sécurité au cas où l'utilisateur a juste tapé un espace
+                    toggleButtonState();
                     return;
                 }
 
-                // Si le champ 'tel' n'est pas vide et que la valeur n'est pas valide, on affiche une bordure rouge
-                if (telValue && !validateTel(telValue)) {
-                    telInput.classList.add('border-red-500');
-                    // Sinon, on enlève cette bordure
+                // S'il est rempli mais invalide
+                if (!validateTel(telValue)) {
+                    this.classList.add('border-red-500');
                 } else {
-                    telInput.classList.remove('border-red-500');
+                    // S'il est valide, on le formate proprement
+                    const cleanTel = telValue.replace(/\s+/g, '');
+                    this.value = cleanTel.match(/.{1,2}/g)?.join(' ') || "";
+                    this.classList.remove('border-red-500');
                 }
+
+                // 4. IMPORTANT : On force la vérification du bouton après avoir reformaté le numéro
+                toggleButtonState();
             });
 
-            // Style dynamique pour 'object'
             objectInput.addEventListener('blur', function () {
-                const objectValue = objectInput.value;
-
-                // Si le champ 'object' est vide, on affiche la bordure rouge
-                if (!objectValue) {
-                    objectInput.classList.add('border-red-500');
-                    // Sinon, on enlève cette bordure
+                if (!this.value.trim()) {
+                    this.classList.add('border-red-500');
                 } else {
-                    objectInput.classList.remove('border-red-500');
+                    this.classList.remove('border-red-500');
                 }
             });
 
-            // Style dynamique pour 'corps'
             corpsInput.addEventListener('blur', function () {
-                const corpsValue = corpsInput.value;
-
-                // Si le champ 'corps' est vide, on affiche la bordure rouge
-                if (!corpsValue) {
-                    corpsInput.classList.add('border-red-500');
-                    // Sinon, on enlève cette bordure
+                if (!this.value.trim()) {
+                    this.classList.add('border-red-500');
                 } else {
-                    corpsInput.classList.remove('border-red-500');
+                    this.classList.remove('border-red-500');
                 }
             });
         });

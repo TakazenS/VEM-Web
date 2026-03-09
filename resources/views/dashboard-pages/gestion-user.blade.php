@@ -87,6 +87,9 @@
                                         Nom
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Prénom
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                                         Email
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
@@ -104,7 +107,10 @@
                                             {{ $user->id }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $user->name }}
+                                            {{ strtoupper($user->name) }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            {{ $user->prenom }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                             {{ $user->email }}
@@ -182,7 +188,8 @@
                                             <input type="checkbox" name="user_ids[]" value="${user.id}" form="delete-users-form" class="user-checkbox rounded border-gray-300 text-gray-900 shadow-sm focus:ring-gray-700">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${user.id}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${user.name}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${user.name.toUpperCase()}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${user.prenom}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${user.email}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             <form action="/users/${user.id}/update-role" method="POST" class="flex items-center flex-nowrap space-x-2">
@@ -197,7 +204,7 @@
                                                     <option value="logistique" ${user.role === 'logistique' ? 'selected' : ''}>Logistique</option>
                                                     <option value="utilisateur" ${user.role === 'utilisateur' ? 'selected' : ''}>Utilisateur</option>
                                                 </select>
-                                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">Modifier</button>
+                                                <button type="submit" class="inline-flex items-center px-3 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">OK</button>
                                             </form>
                                         </td>
                                     </tr>

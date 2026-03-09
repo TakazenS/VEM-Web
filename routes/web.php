@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\ActualiteController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DmdContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RapportsController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureContactFormSubmit;
+use App\Http\Middleware\isUser;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,11 +28,11 @@ Route::get('/contact/validation', function () {
     return view('contact.valid-contact-send');
 })->middleware(EnsureContactFormSubmit::class)->name('contact.validation');
 
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::middleware([IsUser::class])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->middleware(['auth', 'verified'])->name('dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -56,5 +58,7 @@ Route::middleware(['auth', 'check.role:administrateur, directeur'])->group(funct
         abort(404);
     });
 });
+
+Route::get('/gestion-contact', [DmdContactController::class, 'index'])->name('gestion.contact');
 
 require __DIR__.'/auth.php';

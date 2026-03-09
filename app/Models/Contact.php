@@ -13,5 +13,6 @@ class Contact extends Model
         'tel',
         'object',
         'corps',
+        'corpsPreview',
     ];
 }
