@@ -7,7 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RapportsController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureContactFormSubmit;
-use App\Http\Middleware\isUser;
+use App\Http\Middleware\IsUser;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -59,7 +59,7 @@ Route::middleware(['auth', 'check.role:administrateur, directeur'])->group(funct
     });
 });
 
-Route::middleware(['auth', 'check.role:administrateur, directeur, logistique'])->group(function () {
+Route::middleware(['auth', 'check.contact'])->group(function () {
     Route::get('/gestion-contact', [DmdContactController::class, 'index'])->name('gestion.contact');
 });
 
