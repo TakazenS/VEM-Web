@@ -7,35 +7,41 @@
 
     <div class="mt-4 mb-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 gap-8 mt-8">
-            @forelse($contacts as $contact)
-            <div class="flex flex-col gap-[5px] p-6 bg-white w-full h-full shadow-md rounded-lg">
-                <p>
-                    <span class="bg-gray-200 rounded-md pt-1 pb-1 pl-2 pr-2 font-bold text-gray-600 text-sm">From :</span>
-                    {{ $contact->email . " " . "(" . $contact->name . ")"}}
-                </p>
-                <p>
-                    <span class="bg-gray-200 rounded-md pt-1 pb-1 pl-2 pr-2 font-bold text-gray-600 text-sm">Tel :</span>
-                    @if($contact->tel)
-                    {{ $contact->tel }}
-                    @else
-                    Non fourni
-                    @endif
-                </p>
-                <p class="font-bold">
-                    <span>Objet :</span>
-                    {{ $contact->object }}
-                </p>
-                <p>
-                    <span class="italic underline">Contenu :</span>
-                    <br>
-                    {{ Str::limit($contact->corps, 150) }}
-                </p>
-            </div>
-            @empty
-            <span>Aucune demande de contact !</span>
-            @endforelse
-            </div>
+            @if($contacts->isNotEmpty())
+                <div class="grid grid-cols-2 gap-8 mt-8">
+                    @foreach($contacts as $contact)
+                        <div class="flex flex-col gap-[5px] p-6 bg-white w-full h-full shadow-md rounded-lg">
+                            <p>
+                                <span class="bg-gray-200 rounded-md pt-1 pb-1 pl-2 pr-2 font-bold text-gray-600 text-sm">From :</span>
+                                {{ $contact->email . " " . "(" . $contact->name . ")"}}
+                            </p>
+                            <p>
+                                <span class="bg-gray-200 rounded-md pt-1 pb-1 pl-2 pr-2 font-bold text-gray-600 text-sm">Tel :</span>
+                                @if($contact->tel)
+                                    {{ $contact->tel }}
+                                @else
+                                    Non fourni
+                                @endif
+                            </p>
+                            <p class="font-bold">
+                                <span>Objet :</span>
+                                {{ $contact->object }}
+                            </p>
+                            <p>
+                                <span class="italic underline">Contenu :</span>
+                                <br>
+                                {{ Str::limit($contact->corps, 150) }}
+                            </p>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="flex justify-center items-center min-h-[60vh]">
+                    <div class="pt-6 pb-6 pl-10 pr-10 bg-white h-full shadow-md rounded-lg">
+                        <p>Aucune demande de contact !</p>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

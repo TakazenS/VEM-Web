@@ -13,13 +13,17 @@
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
+        <div class="relative mt-4">
             <x-input-label for="password" :value="__('Mot de passe')" />
 
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
                             name="password"
                             required autocomplete="current-password" />
+
+            <span id="eyeIcon" class="absolute top-1/2 right-5 cursor-pointer" onclick="toggleEye()">
+                <img src="/images/assets/eyeOff.svg" width="24px" height="24px" alt="eyeOff">
+            </span>
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -45,3 +49,17 @@
         </div>
     </form>
 </x-guest-layout>
+<script>
+    function toggleEye() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text'
+            eyeIcon.textContent = 'Y'
+        } else {
+            passwordInput.type = 'password'
+            eyeIcon.textContent = 'O'
+        }
+    }
+</script>
