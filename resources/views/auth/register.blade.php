@@ -24,25 +24,34 @@
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
+        <div class="relative mt-4">
             <x-input-label for="password" :value="__('Mot de passe *')" />
 
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
                             name="password"
                             required autocomplete="new-password" />
+
+            <span class="absolute top-8 right-5 cursor-pointer" onclick="toggleEye1()">
+                <img id="eyeIcon1"  src="/images/assets/eyeOff.svg" width="22px" height="22px" alt="eyeOff">
+            </span>
+
             <ul id="password-errors" class="text-sm text-red-500 mt-2 list-disc list-inside hidden"></ul>
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <!-- Confirm Password -->
-        <div class="mt-4">
+        <div class="relative mt-4">
             <x-input-label for="password_confirmation" :value="__('Confirmez le mot de passe *')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
                             type="password"
                             name="password_confirmation" required autocomplete="new-password" />
+
+            <span class="absolute top-8 right-5 cursor-pointer" onclick="toggleEye2()">
+                <img id="eyeIcon2"  src="/images/assets/eyeOff.svg" width="22px" height="22px" alt="eyeOff">
+            </span>
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
@@ -207,5 +216,32 @@
                 }
             });
         });
+
+
+        function toggleEye1() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon1 = document.getElementById('eyeIcon1');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text'
+                eyeIcon1.src = 'images/assets/eyeOn.svg'
+            } else {
+                passwordInput.type = 'password'
+                eyeIcon1.src = 'images/assets/eyeOff.svg'
+            }
+        }
+
+        function toggleEye2() {
+            const passwordConfirmInput = document.getElementById('password_confirmation');
+            const eyeIcon2 = document.getElementById('eyeIcon2');
+
+            if (passwordConfirmInput.type === 'password') {
+                passwordConfirmInput.type = 'text'
+                eyeIcon2.src = 'images/assets/eyeOn.svg'
+            } else {
+                passwordConfirmInput.type = 'password'
+                eyeIcon2.src = 'images/assets/eyeOff.svg'
+            }
+        }
     </script>
 </x-guest-layout>

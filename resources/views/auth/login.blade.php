@@ -21,8 +21,8 @@
                             name="password"
                             required autocomplete="current-password" />
 
-            <span id="eyeIcon" class="absolute top-1/2 right-5 cursor-pointer" onclick="toggleEye()">
-                <img src="/images/assets/eyeOff.svg" width="24px" height="24px" alt="eyeOff">
+            <span class="absolute top-1/2 right-5 cursor-pointer" onclick="toggleEye()">
+                <img id="eyeIcon"  src="/images/assets/eyeOff.svg" width="22px" height="22px" alt="eyeOff">
             </span>
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
@@ -56,10 +56,10 @@
 
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text'
-            eyeIcon.textContent = 'Y'
+            eyeIcon.src = 'images/assets/eyeOn.svg'
         } else {
             passwordInput.type = 'password'
-            eyeIcon.textContent = 'O'
+            eyeIcon.src = 'images/assets/eyeOff.svg'
         }
     }
 </script>
