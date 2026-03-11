@@ -49,9 +49,10 @@ class UserController extends Controller
                 return $query->where(function ($q) use ($searchTerm) {
                     // Recherche insensible à la casse sur le nom et l'email
                     $q->whereRaw('LOWER(name) LIKE ?', ["%{$searchTerm}%"])
-                      ->orWhereRaw('LOWER(email) LIKE ?', ["%{$searchTerm}%"])
-                      // La recherche sur l'ID reste une recherche normale
-                      ->orWhere('id', 'like', "%{$searchTerm}%");
+                        ->orWhereRaw('LOWER(prenom) LIKE ?', ["%{$searchTerm}%"])
+                        ->orWhereRaw('LOWER(email) LIKE ?', ["%{$searchTerm}%"])
+                        ->orWhereRaw('LOWER(role) LIKE ?', ["%{$searchTerm}%"])
+                        ->orWhere('id', 'like', "%{$searchTerm}%");
                 });
             })
             ->orderBy('id')

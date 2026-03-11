@@ -23,4 +23,9 @@ class DmdContactController
 
         return view('dashboard-pages.gestion-contact', ['contacts' => $contacts]);
     }
+
+    public function showDetails($id): View {
+        $contact = Contact::find($id);
+        return view('contact.showDetails', compact('contact'));
+    }
 }

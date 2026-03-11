@@ -62,6 +62,7 @@ Route::middleware(['auth', 'check.role:administrateur, directeur'])->group(funct
 
 Route::middleware(['auth', 'check.contact'])->group(function () {
     Route::get('/gestion-contact', [DmdContactController::class, 'index'])->name('gestion.contact');
+    Route::get('/gestion-contact/{id}', [DmdContactController::class, 'showDetails'])->name('gestion.contact.show');
 });
 
 require __DIR__.'/auth.php';

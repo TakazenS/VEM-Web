@@ -10,29 +10,31 @@
             @if($contacts->isNotEmpty())
                 <div class="grid grid-cols-2 gap-8 mt-8">
                     @foreach($contacts as $contact)
-                        <div class="flex flex-col gap-[5px] p-6 bg-white w-full h-full shadow-md rounded-lg">
-                            <p>
-                                <span class="bg-gray-200 rounded-md pt-1 pb-1 pl-2 pr-2 font-bold text-gray-600 text-sm">From :</span>
-                                {{ $contact->email . " " . "(" . $contact->name . ")"}}
-                            </p>
-                            <p>
-                                <span class="bg-gray-200 rounded-md pt-1 pb-1 pl-2 pr-2 font-bold text-gray-600 text-sm">Tel :</span>
-                                @if($contact->tel)
-                                    {{ $contact->tel }}
-                                @else
-                                    Non fourni
-                                @endif
-                            </p>
-                            <p class="font-bold">
-                                <span>Objet :</span>
-                                {{ $contact->object }}
-                            </p>
-                            <p>
-                                <span class="italic underline">Contenu :</span>
-                                <br>
-                                {{ Str::limit($contact->corps, 150) }}
-                            </p>
-                        </div>
+                        <a href="{{ route('gestion.contact.show', ['id' => $contact->id]) }}" class="m-0 p-0">
+                            <div class="flex flex-col gap-[5px] p-6 bg-white w-full h-full shadow-md rounded-lg">
+                                <p class="left-0">
+                                    <span class="bg-gray-200 rounded-md pt-1 pb-1 pl-2 pr-2 font-bold text-gray-600 text-sm">From :</span>
+                                    {{ $contact->email . " " . "(" . $contact->name . ")"}}
+                                </p>
+                                <p>
+                                    <span class="bg-gray-200 rounded-md pt-1 pb-1 pl-2 pr-2 font-bold text-gray-600 text-sm">Tel :</span>
+                                    @if($contact->tel)
+                                        {{ $contact->tel }}
+                                    @else
+                                        Non fourni
+                                    @endif
+                                </p>
+                                <p class="font-bold">
+                                    <span>Objet :</span>
+                                    {{ $contact->object }}
+                                </p>
+                                <p>
+                                    <span class="italic underline">Contenu :</span>
+                                    <br>
+                                    {{ Str::limit($contact->corps, 150) }}
+                                </p>
+                            </div>
+                        </a>
                     @endforeach
                 </div>
             @else
